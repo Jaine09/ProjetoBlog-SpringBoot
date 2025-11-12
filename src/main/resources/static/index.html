@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Blog</title>
+    <link rel="stylesheet" type="text/css" href="stylesheet.css">
+</head>
+<body>
+<div class="container">
+    <h1>Blog</h1>
+
+    <div id="tela-lista">
+        <div id="artigos"></div>
+        <div class="center">
+            <button id="btn-novo">Incluir nova publicacao</button>
+        </div>
+    </div>
+
+    <div id="tela-formulario" style="display:none;">
+        <div class="card form-card">
+            <h2>Novo texto</h2>
+            <div class="form-row">
+                <label>Título</label>
+                <input id="titulo" />
+            </div>
+            <div class="form-row">
+                <label>Autor</label>
+                <input id="autor" />
+            </div>
+            <div class="form-row">
+                <label>Data de publicação</label>
+                <input id="dataPubli" type="date"/>
+            </div>
+            <div class="form-row">
+                <label>Texto</label>
+                <textarea id="texto" rows="6"></textarea>
+            </div>
+            <div class="center">
+                <button id="btn-salvar">Salvar</button>
+                <button id="btn-cancelar" class="secondary">Cancelar</button>
+            </div>
+            <div id="mensagem" class="message"></div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>Jaíne Jesus Costa | Camile Rosa Santos | TADS3a | 2025</p>
+</footer>
+<script src="script.js"></script>
+</body>
+</html>
