@@ -1,7 +1,7 @@
 // Jaíne Jesus Costa e Camile Vitoria Rosa Santos
 
 
-package com.example.demo;
+package com.example.demo.model;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

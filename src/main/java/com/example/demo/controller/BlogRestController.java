@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.controller;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -6,6 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+
+import com.example.demo.model.Blog;
+import com.example.demo.service.PostService;
 
 import java.net.URI;
 import java.util.List;
