@@ -1,52 +1,38 @@
 package com.example.demo;
 
-import jakarta.persistence.*; // Importações do JPA
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull; // Importante para datas
 import jakarta.validation.constraints.Size;
+import lombok.Data; // Do Lombok
+import lombok.NoArgsConstructor; // Do Lombok
+import lombok.AllArgsConstructor; // Do Lombok
 import java.time.LocalDate;
 
-@Entity // Indica que essa classe é uma tabela no banco
-@Table(name = "tb_postagens")
+@Data // Gera Getters, Setters, toString, etc. automaticamente
+@NoArgsConstructor // Gera o construtor vazio obrigatório
+@AllArgsConstructor // Gera o construtor com todos os argumentos
+@Entity // Transforma essa classe em uma tabela no banco H2
+@Table(name = "postagens")
 public class Blog {
 
-    @Id // Chave Primária
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-incremento
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank @Size(min = 3, max = 100)
+    @NotBlank(message = "O título é obrigatório")
+    @Size(min = 3, max = 100, message = "O título deve ter entre 3 e 100 caracteres")
     private String titulo;
 
-    @NotBlank @Size(min = 3, max = 100)
+    @NotBlank(message = "O autor é obrigatório")
+    @Size(min = 3, max = 100, message = "O autor deve ter entre 3 e 100 caracteres")
     private String autor;
 
+    @NotNull(message = "A data de publicação é obrigatória")
     private LocalDate dataPubli;
 
-    @NotBlank @Size(min = 10, max = 800)
-    @Column(columnDefinition = "TEXT") // Para permitir textos longos no banco
+    @NotBlank(message = "O texto é obrigatório")
+    @Size(min = 10, max = 800, message = "O texto deve ter entre 10 e 800 caracteres")
+    @Column(columnDefinition = "TEXT") // Permite textos longos
     private String texto;
-
-    public Blog() { }
-
-    public Blog(String autor, String titulo, LocalDate dataPubli, String texto) {
-        this.autor = autor;
-        this.titulo = titulo;
-        this.dataPubli = dataPubli;
-        this.texto = texto;
-    }
-
-    // Getters e Setters (incluindo o ID)
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public String getTitulo() { return titulo; }
-    public void setTitulo(String titulo) { this.titulo = titulo; }
-
-    public String getAutor() { return autor; }
-    public void setAutor(String autor) { this.autor = autor; }
-
-    public LocalDate getDataPubli() { return dataPubli; }
-    public void setDataPubli(LocalDate dataPubli) { this.dataPubli = dataPubli; }
-
-    public String getTexto() { return texto; }
-    public void setTexto(String texto) { this.texto = texto; }
 }

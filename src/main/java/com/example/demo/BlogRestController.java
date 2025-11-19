@@ -1,11 +1,10 @@
 package com.example.demo;
 
-import jakarta.validation.Valid; // Importante!
+import jakarta.validation.Valid; // OBRIGATÓRIO PARA VALIDAÇÃO
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Map;
 
@@ -23,16 +22,15 @@ public class BlogRestController {
     }
 
     @PostMapping
-    // O @Valid aqui ativa as regras que definimos na classe Blog (Entity)
+    // O @Valid verifica as anotações @NotBlank e @Size na classe Blog
     public ResponseEntity<?> create(@Valid @RequestBody Blog data) {
         try {
             Blog criado = service.adicionarNovo(data);
             return ResponseEntity.status(HttpStatus.CREATED).body(criado);
         } catch (IllegalArgumentException ex) {
-            // Captura erros de regra de negócio (ex: data antiga)
             return ResponseEntity.badRequest().body(Map.of("error", ex.getMessage()));
         } catch (Exception ex) {
-            return ResponseEntity.status(500).body(Map.of("error", "Erro interno ao salvar."));
+            return ResponseEntity.status(500).body(Map.of("error", "Erro ao salvar no banco."));
         }
     }
 }
