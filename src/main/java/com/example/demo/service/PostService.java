@@ -1,5 +1,7 @@
-package com.example.demo;
+package com.example.demo.service;
 
+import com.example.demo.BlogRepository;
+import com.example.demo.model.Blog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
@@ -23,6 +25,8 @@ public class PostService {
 
         // Limpeza de dados (opcional)
         data.setTitulo(data.getTitulo().trim());
+        data.setAutor(data.getAutor().trim());
+        data.setTexto(data.getTexto().trim());
 
         return repository.save(data); // Salva permanentemente no arquivo do H2
     }

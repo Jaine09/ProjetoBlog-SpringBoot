@@ -1,5 +1,7 @@
-package com.example.demo;
+package com.example.demo.controller;
 
+import com.example.demo.model.Blog;
+import com.example.demo.service.PostService;
 import jakarta.validation.Valid; // OBRIGATÓRIO PARA VALIDAÇÃO
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,4 +35,7 @@ public class BlogRestController {
             return ResponseEntity.status(500).body(Map.of("error", "Erro ao salvar no banco."));
         }
     }
+
+
+
 }
