@@ -5,8 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 
-@Entity // Indica que essa classe é uma tabela no banco
-@Table(name = "tb_postagens")
 public class Blog {
 
     @Id // Chave Primária

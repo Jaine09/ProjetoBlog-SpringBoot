@@ -35,4 +35,7 @@ public class BlogRestController {
             return ResponseEntity.status(500).body(Map.of("error", "Erro interno ao salvar."));
         }
     }
+
+
+
 }

@@ -1,7 +1,9 @@
-package com.example.demo;
+package com.example.demo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.example.demo.model.Blog;
 
 import java.time.LocalDate;
 import java.util.List;
