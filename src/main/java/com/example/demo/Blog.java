@@ -1,13 +1,17 @@
-// Jaíne Jesus Costa e Camile Vitoria Rosa Santos
-
-
 package com.example.demo;
 
+import jakarta.persistence.*; // Importações do JPA
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 
+@Entity // Indica que essa classe é uma tabela no banco
+@Table(name = "tb_postagens")
 public class Blog {
+
+    @Id // Chave Primária
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Auto-incremento
+    private Long id;
 
     @NotBlank @Size(min = 3, max = 100)
     private String titulo;
@@ -18,6 +22,7 @@ public class Blog {
     private LocalDate dataPubli;
 
     @NotBlank @Size(min = 10, max = 800)
+    @Column(columnDefinition = "TEXT") // Para permitir textos longos no banco
     private String texto;
 
     public Blog() { }
@@ -28,6 +33,10 @@ public class Blog {
         this.dataPubli = dataPubli;
         this.texto = texto;
     }
+
+    // Getters e Setters (incluindo o ID)
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
     public String getTitulo() { return titulo; }
     public void setTitulo(String titulo) { this.titulo = titulo; }
