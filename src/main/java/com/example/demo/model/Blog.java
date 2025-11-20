@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor; // Do Lombok
 import lombok.AllArgsConstructor; // Do Lombok
 import java.time.LocalDate;
 
-@Data // Gera Getters, Setters, toString, etc. automaticamente
-@NoArgsConstructor // Gera o construtor vazio obrigatório
-@AllArgsConstructor // Gera o construtor com todos os argumentos
-@Entity // Transforma essa classe em uma tabela no banco H2
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
 @Table(name = "postagens")
 public class Blog {
 
