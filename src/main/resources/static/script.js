@@ -1,61 +1,51 @@
 const API = 'http://localhost:8080/blog';
 
-// Variáveis de Estado
-let editandoId = null;      // Guarda o ID se estivermos editando
-let idParaExcluir = null;   // Guarda o ID temporariamente para o Modal
+let editandoId = null;
+let idParaExcluir = null;
 
-// --- INICIALIZAÇÃO ---
 document.addEventListener('DOMContentLoaded', () => {
   carregarArtigos();
 
-  // Botões de Navegação e Ação
   document.getElementById('btn-novo').addEventListener('click', mostrarFormulario);
   document.getElementById('btn-cancelar').addEventListener('click', mostrarLista);
   document.getElementById('btn-salvar').addEventListener('click', salvarArtigo);
 
-  // Listeners do Modal (Caixa de Confirmação)
   document.getElementById('btn-sim-exclusao').addEventListener('click', confirmarExclusaoReal);
   document.getElementById('btn-nao-exclusao').addEventListener('click', fecharModal);
 });
 
-// --- FUNÇÕES DE UI (INTERFACE) ---
+// ======== TELAS ========
 
 function mostrarFormulario() {
   document.getElementById('tela-lista').style.display = 'none';
   document.getElementById('tela-formulario').style.display = 'block';
-  limparFormulario();
-}
-
-function mostrarLista() {
-  document.getElementById('tela-lista').style.display = 'block';
-  document.getElementById('tela-formulario').style.display = 'none';
-}
-
-function limparFormulario() {
-  editandoId = null;
-  document.getElementById('titulo').value = '';
-  document.getElementById('autor').value = '';
-  // Define a data como hoje (formato YYYY-MM-DD)
-  document.getElementById('dataPubli').value = new Date().toISOString().slice(0, 10);
-  document.getElementById('texto').value = '';
   document.getElementById('mensagem').innerText = '';
 }
 
-function fecharModal() {
-  idParaExcluir = null; // Limpa o ID da memória
-  document.getElementById('modal-confirmacao').style.display = 'none';
+function mostrarLista() {
+  editandoId = null;
+  document.getElementById('tela-lista').style.display = 'block';
+  document.getElementById('tela-formulario').style.display = 'none';
+  limparFormulario();
 }
 
-// --- CRUD: READ (LER) ---
+function limparFormulario() {
+  document.getElementById('titulo').value = '';
+  document.getElementById('autor').value = '';
+  document.getElementById('dataPubli').value = new Date().toISOString().slice(0, 10);
+  document.getElementById('texto').value = '';
+}
+
+// ======== LISTAGEM ========
 
 async function carregarArtigos() {
   try {
     const resp = await fetch(API);
     const data = await resp.json();
     renderizarArtigos(data);
-  } catch (err) {
-    console.error(err);
-    document.getElementById('artigos').innerHTML = '<p>Erro ao carregar artigos.</p>';
+  } catch (e) {
+    console.error(e);
+    document.getElementById('artigos').innerHTML = "<p>Erro ao carregar artigos.</p>";
   }
 }
 
@@ -63,27 +53,22 @@ function renderizarArtigos(lista) {
   const container = document.getElementById('artigos');
   container.innerHTML = '';
 
-  if (!lista || lista.length === 0) {
+  if (!lista.length) {
     container.innerHTML = '<p>Nenhum texto cadastrado.</p>';
     return;
   }
 
-  for (const a of lista) {
+  lista.forEach(a => {
     const card = document.createElement('div');
     card.className = 'article-card';
 
-    // 1. Título e Badge
     const titulo = document.createElement('div');
     titulo.className = 'article-title';
     titulo.innerText = a.titulo;
 
-    // Lógica para badge "NÃO PUBLICADO"
-    // Adicionamos 'T00:00:00' para garantir que o navegador entenda a data local corretamente
-    const dataString = a.dataPubli.includes('T') ? a.dataPubli : a.dataPubli + 'T00:00:00';
+    const dataString = a.dataPubli.includes('T') ? a.dataPubli.split('T')[0] : a.dataPubli;
     const dpub = new Date(dataString);
     const hoje = new Date();
-
-    // Zera a hora de hoje para comparar apenas a data
     hoje.setHours(0,0,0,0);
 
     if (dpub > hoje) {
@@ -92,120 +77,96 @@ function renderizarArtigos(lista) {
       badge.innerText = 'NÃO PUBLICADO';
       titulo.appendChild(badge);
     }
+
     card.appendChild(titulo);
 
-    // 2. Metadados (Autor e Data)
     const meta = document.createElement('div');
-    // Corrige problema de fuso horário ao exibir a data
-    const dataFormatada = new Date(dataString).toLocaleDateString('pt-BR');
-    meta.innerHTML = `Autor: ${a.autor} <br> Publicado em: ${dataFormatada}`;
+    meta.innerHTML = `Autor: ${a.autor}<br>Publicado em: ${new Date(dataString).toLocaleDateString("pt-BR")}`;
     card.appendChild(meta);
 
-    // 3. Resumo (Texto)
-    const resumo = document.createElement('div');
-    resumo.innerHTML = `<p>${a.texto}</p>`;
-    card.appendChild(resumo);
+    const texto = document.createElement('div');
+    texto.innerHTML = `<p>${a.texto}</p>`;
+    card.appendChild(texto);
 
-    // 4. Botões de Ação
-    const btnContainer = document.createElement('div');
+    const btns = document.createElement('div');
+    const btnAlt = document.createElement('button');
+    btnAlt.innerText = "Alterar";
+    btnAlt.onclick = () => prepararEdicao(a);
 
-    const btnAlterar = document.createElement('button');
-    btnAlterar.innerText = 'Alterar';
-    btnAlterar.addEventListener('click', () => prepararEdicao(a));
+    const btnExc = document.createElement('button');
+    btnExc.innerText = "Excluir";
+    btnExc.className = "delete";
+    btnExc.onclick = () => excluirArtigo(a.id);
 
-    const btnExcluir = document.createElement('button');
-    btnExcluir.innerText = 'Excluir';
-    btnExcluir.className = 'delete'; // Estilo vermelho
-    btnExcluir.addEventListener('click', () => excluirArtigo(a.id)); // Abre o Modal
+    btns.appendChild(btnAlt);
+    btns.appendChild(btnExc);
 
-    btnContainer.appendChild(btnAlterar);
-    btnContainer.appendChild(btnExcluir);
-    card.appendChild(btnContainer);
-
+    card.appendChild(btns);
     container.appendChild(card);
-  }
+  });
 }
 
-// --- CRUD: CREATE & UPDATE (CRIAR E ATUALIZAR) ---
+// ======== SALVAR (POST / PUT) ========
 
 async function salvarArtigo() {
   const dto = {
     titulo: document.getElementById('titulo').value.trim(),
     autor: document.getElementById('autor').value.trim(),
-    dataPubli: document.getElementById('dataPubli').value,
+    dataPubli: document.getElementById('dataPubli').value.trim(),
     texto: document.getElementById('texto').value.trim()
   };
 
   const msg = document.getElementById('mensagem');
-  msg.style.color = 'red';
+  msg.style.color = "red";
 
-  // Validação Front-end
   if (!dto.titulo || !dto.autor || !dto.dataPubli || !dto.texto) {
-    msg.innerText = 'Todos os campos são obrigatórios.';
-    return;
-  }
-  if (dto.texto.length < 10) {
-    msg.innerText = 'O texto deve ter no mínimo 10 caracteres.';
+    msg.innerText = "Todos os campos são obrigatórios.";
     return;
   }
 
-  const id = editandoId;
-  const hojeString = new Date().toISOString().slice(0, 10);
-
-  // Só valida a data se for um NOVO artigo
-  if (dto.dataPubli < hojeString && !id) {
-    msg.innerText = 'A data de publicação deve ser hoje ou no futuro.';
-    return;
-  }
-
-  // Define se é POST (novo) ou PUT (edição)
-  const method = id ? 'PUT' : 'POST';
-  const url = id ? `${API}/${id}` : API;
+  const method = editandoId ? "PUT" : "POST";
+  const url = editandoId ? `${API}/${editandoId}` : API;
 
   try {
     const resp = await fetch(url, {
-      method: method,
-      headers: { 'Content-Type': 'application/json' },
+      method,
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(dto)
     });
 
     if (resp.ok) {
-      msg.style.color = 'green';
-      msg.innerText = 'Texto salvo com sucesso!';
-
+      msg.style.color = "green";
+      msg.innerText = "Salvo com sucesso!";
       await carregarArtigos();
-      setTimeout(() => mostrarLista(), 700); // Volta pra lista após 0.7s
+      setTimeout(() => mostrarLista(), 700);
     } else {
-      // Tenta ler o erro do Back-end
-      const err = await resp.json();
-      if (err.errors) {
-        msg.innerText = err.errors.join(' | ');
-      } else if (err.error) {
-        msg.innerText = err.error;
-      } else {
-        msg.innerText = 'Erro ao salvar (servidor).';
-      }
+      const err = await resp.json().catch(() => null);
+      msg.innerText = err?.error || "Erro ao salvar.";
     }
   } catch (e) {
-    msg.innerText = 'Erro ao conectar com o servidor.';
-    console.error(e);
+    msg.innerText = "Erro ao conectar ao servidor.";
   }
 }
 
-function prepararEdicao(artigo) {
-  editandoId = artigo.id;
-  console.log("Aquii");
+// ======== EDIÇÃO ========
 
-  document.getElementById('titulo').value = artigo.titulo;
-  document.getElementById('autor').value = artigo.autor;
-  document.getElementById('dataPubli').value = artigo.dataPubli; // Já vem como YYYY-MM-DD do Java LocalDate
-  document.getElementById('texto').value = artigo.texto;
+function prepararEdicao(a) {
+  editandoId = a.id;
+  console.log("Editando ID:", editandoId);
+
+  document.getElementById('titulo').value = a.titulo;
+  document.getElementById('autor').value = a.autor;
+
+  // CORREÇÃO DEFINITIVA DA DATA
+  const data = a.dataPubli.includes("T") ? a.dataPubli.split("T")[0] : a.dataPubli;
+  document.getElementById('dataPubli').value = data;
+
+  document.getElementById('texto').value = a.texto;
 
   mostrarFormulario();
-  document.getElementById('mensagem').innerText = '';
 }
 
-// --- CRUD: DELETE (EXCLUIR COM MODAL) ---
+// ======== EXCLUSÃO ========
 
 function excluirArtigo(id) {
   idParaExcluir = id;
@@ -216,20 +177,15 @@ async function confirmarExclusaoReal() {
   if (!idParaExcluir) return;
 
   try {
-    const resp = await fetch(`${API}/${idParaExcluir}`, {
-      method: 'DELETE'
-    });
-
-    if (resp.ok) {
-      fecharModal();
-      await carregarArtigos();
-    } else {
-      alert('Erro ao excluir o artigo.');
-      fecharModal();
-    }
-  } catch (e) {
-    console.error(e);
-    alert('Erro de conexão.');
+    const resp = await fetch(`${API}/${idParaExcluir}`, { method: "DELETE" });
     fecharModal();
+    await carregarArtigos();
+  } catch (e) {
+    alert("Erro de conexão.");
   }
+}
+
+function fecharModal() {
+  idParaExcluir = null;
+  document.getElementById('modal-confirmacao').style.display = 'none';
 }
