@@ -6,7 +6,7 @@
 }
 
 body {
-    background-color: #f5f5f5;
+    background-color: #EFC3CA;
     color: #333;
     line-height: 1.6;
 }
@@ -15,14 +15,15 @@ body {
     max-width: 800px;
     margin: 40px auto;
     padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
+    border: 1px solid #ffffff;
+    border-radius: 20px;
+    background-color: #fceff1;
 }
 
 h1 {
     text-align: center;
     margin-bottom: 30px;
-    color: #2c3e50;
+    color: #502c42;
 }
 
 button {
@@ -35,10 +36,16 @@ button {
     cursor: pointer;
     font-size: 14px;
     transition: background-color 0.3s ease;
+    border-radius: 20px;
+}
+
+img{
+    height: 300px;
+    width: 300px;
 }
 
 button:hover {
-    background-color: #2980b9;
+    background-color: #9ecdec;
 }
 
 button.secondary {
@@ -52,8 +59,8 @@ button.secondary:hover {
 
 .article-card {
     background-color: #fff;
-    border: 1px solid #ccc; 
-    border-radius: 5px;
+    border: 2px solid #8dcbd6; 
+    border-radius: 25px;
     padding: 15px;
     margin-bottom: 20px;
 }
@@ -89,11 +96,13 @@ button.secondary:hover {
 
 
 button.delete {
-    background-color: #e74c3c; 
+    border-radius: 20px;
+    background-color: #ff85ae; 
 }
 
 button.delete:hover {
-    background-color: #c0392b;
+    border-radius: 20px;
+    background-color: #e6aed5;
 }
 
 .form-card {

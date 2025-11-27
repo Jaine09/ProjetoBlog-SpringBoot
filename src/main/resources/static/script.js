@@ -194,6 +194,7 @@ async function salvarArtigo() {
 
 function prepararEdicao(artigo) {
   editandoId = artigo.id;
+  console.log("Aquii");
 
   document.getElementById('titulo').value = artigo.titulo;
   document.getElementById('autor').value = artigo.autor;
