@@ -14,8 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('btn-nao-exclusao').addEventListener('click', fecharModal);
 });
 
-// ======== TELAS ========
-
 function mostrarFormulario() {
   document.getElementById('tela-lista').style.display = 'none';
   document.getElementById('tela-formulario').style.display = 'block';
@@ -36,7 +34,6 @@ function limparFormulario() {
   document.getElementById('texto').value = '';
 }
 
-// ======== LISTAGEM ========
 
 async function carregarArtigos() {
   try {
