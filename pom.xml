@@ -5,44 +5,30 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- SPRING BOOT -->
+
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.5.6</version>
         <relativePath/>
     </parent>
-
-    <!-- PROJETO -->
     <groupId>com.example</groupId>
     <artifactId>demo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Blog</name>
     <description>Projeto Blog com Spring Boot</description>
-
-    <!-- PROPRIEDADES GLOBAIS -->
     <properties>
         <java.version>21</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
-    <!-- DEPENDÊNCIAS -->
     <dependencies>
-
-        <!-- Thymeleaf (se usar páginas .html no templates) -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
-
-        <!-- Web / REST -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!-- JPA + H2 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -54,20 +40,17 @@
             <scope>runtime</scope>
         </dependency>
 
-        <!-- Validações (ex: @NotNull) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
 
-        <!-- Lombok -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
 
-        <!-- Desenvolvimento -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
@@ -75,7 +58,6 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- Testes -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -84,11 +66,9 @@
 
     </dependencies>
 
-    <!-- BUILD -->
     <build>
         <plugins>
 
-            <!-- Compilador -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -110,7 +90,6 @@
                 </configuration>
             </plugin>
 
-            <!-- Spring Boot -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -124,15 +103,12 @@
                 </configuration>
             </plugin>
 
-            <!-- RESOLVER O SEU ERRO DE ENCODING -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>3.3.1</version>
                 <configuration>
                     <encoding>UTF-8</encoding>
-
-                    <!-- NÃO FILTRAR application.properties -->
                     <nonFilteredFileExtensions>
                         <nonFilteredFileExtension>properties</nonFilteredFileExtension>
                     </nonFilteredFileExtensions>
