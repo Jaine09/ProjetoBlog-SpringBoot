@@ -24,11 +24,9 @@ public class PostService {
 
     public Blog atualizar(Long id, Blog data) {
 
-        // Verifica se existe
         Blog existente = repository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("ID não encontrado"));
 
-        // Copia os campos
         existente.setTitulo(data.getTitulo());
         existente.setAutor(data.getAutor());
         existente.setDataPubli(data.getDataPubli());

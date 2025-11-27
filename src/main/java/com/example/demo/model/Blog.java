@@ -2,11 +2,11 @@ package com.example.demo.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull; // Importante para datas
+import jakarta.validation.constraints.NotNull; 
 import jakarta.validation.constraints.Size;
-import lombok.Data; // Do Lombok
-import lombok.NoArgsConstructor; // Do Lombok
-import lombok.AllArgsConstructor; // Do Lombok
+import lombok.Data; 
+import lombok.NoArgsConstructor; 
+import lombok.AllArgsConstructor;
 import java.time.LocalDate;
 
 @Data
@@ -33,6 +33,6 @@ public class Blog {
 
     @NotBlank(message = "O texto é obrigatório")
     @Size(min = 10, max = 800, message = "O texto deve ter entre 10 e 800 caracteres")
-    @Column(columnDefinition = "TEXT") // Permite textos longos
+    @Column(columnDefinition = "TEXT")
     private String texto;
 }

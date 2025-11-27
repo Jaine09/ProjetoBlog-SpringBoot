@@ -106,7 +106,6 @@ function renderizarArtigos(lista) {
   });
 }
 
-// ======== SALVAR (POST / PUT) ========
 
 async function salvarArtigo() {
   const dto = {
@@ -148,25 +147,20 @@ async function salvarArtigo() {
   }
 }
 
-// ======== EDIÇÃO ========
-
-function prepararEdicao(a) {
-  editandoId = a.id;
+function prepararEdicao(post) {
+  editandoId = post.id;
   console.log("Editando ID:", editandoId);
 
-  document.getElementById('titulo').value = a.titulo;
-  document.getElementById('autor').value = a.autor;
+  document.getElementById('titulo').value = post.titulo;
+  document.getElementById('autor').value = post.autor;
 
-  // CORREÇÃO DEFINITIVA DA DATA
-  const data = a.dataPubli.includes("T") ? a.dataPubli.split("T")[0] : a.dataPubli;
+  const data = post.dataPubli.includes("T") ? post.dataPubli.split("T")[0] : post.dataPubli;
   document.getElementById('dataPubli').value = data;
 
-  document.getElementById('texto').value = a.texto;
+  document.getElementById('texto').value = post.texto;
 
   mostrarFormulario();
 }
-
-// ======== EXCLUSÃO ========
 
 function excluirArtigo(id) {
   idParaExcluir = id;
